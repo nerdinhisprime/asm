@@ -9,7 +9,7 @@ section .bss
 section .text
 
 parse:
-  xor eax, eax              ; обнуляет 
+  xor eax, eax              ; обнуляет
 .next:
   movzx ecx, byte [rsi]
   sub ecx, '0'
