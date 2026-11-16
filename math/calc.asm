@@ -9,8 +9,8 @@ section .text
 global _start
 
 _start:
-  mov rax, 0
-  mov rdi, 0
+  xor eax, eax
+  xor edi, edi
   mov rsi, inbuf
   mov rdx, BUF_SIZE
   syscall
@@ -48,11 +48,11 @@ itoa:
   lea rdi, [outbuf + BUF_SIZE]
   mov rcx, 10
 .next:
-  xor edx, edx
-  div rcx
-  add dl, '0'
-  dec rdi
-  mov [rdi], dl
-  test rax, rax
-  jnz .next
+  xor edx, edx    ; обнуляем rdx|edx|dx|dl
+  div rcx         ; rdx | rax : rcx = частное в (rax), остаток в (rdx)
+  add dl, '0'     ; остаток из dl (RDX версия в которой лежит остаток) + 48
+  dec rdi         ; читаем символ левее
+  mov [rdi], dl   ; пишем сумму dl + 48 в байт rdi левее
+  test rax, rax   ; если они не 0 то:
+  jnz .next       ; перемещаемся в .next
   ret
